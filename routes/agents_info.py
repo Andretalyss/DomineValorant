@@ -1,6 +1,4 @@
 from flask import Blueprint, jsonify
-import requests
-import json
 from psycopg2 import sql
 import psycopg2
 
@@ -9,7 +7,7 @@ from vars.variables import db_config, SECRET_TOKEN
 agents_info_routes = Blueprint('agents', __name__)
 
 ### RETORNA TODOS OS AGENTES
-@agents_info_routes.route('/agents', methods=['GET'])
+@agents_info_routes.route('/agents', methods=['GET'],strict_slashes=False)
 def agents_info_get_all():
     db_connection = psycopg2.connect(**db_config)
     cursor = db_connection.cursor()
@@ -42,11 +40,12 @@ def agents_info_get_all():
                 "Descrição": row[9]
             }
         })
-    
-    return json.dumps(json_data, ensure_ascii=False, indent=4)
+    json_data = jsonify(json_data)
+    json_data.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return json_data, 200
 
 ### RETORNA AGENTE POR NOME
-@agents_info_routes.route('/agents/<agent>', methods=['GET'])
+@agents_info_routes.route('/agents/<agent>', methods=['GET'],strict_slashes=False)
 def agent_get(agent):
     db_connection = psycopg2.connect(**db_config)
     cursor = db_connection.cursor()
@@ -79,8 +78,10 @@ def agent_get(agent):
                 "Descrição": row[8]
             }
         }
-        
-        return json.dumps(data, ensure_ascii=False, indent=4), 200
+
+        json_data = jsonify(data)
+        json_data.headers['Content-Type'] = 'application/json; charset=utf-8'
+        return json_data, 200
     
     db_connection.close()
     return jsonify({'error': "Agent not found"}), 404
