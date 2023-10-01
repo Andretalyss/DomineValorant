@@ -11,9 +11,11 @@ RUN apk upgrade && \
     pip install pyjwt && \
     pip install bcrypt && \
     pip install requests && \
+    pip install gunicorn && \
+    pip install redis && \
     apk --purge del .build-deps
 
 COPY . .
 
-CMD ["python3", "main.py"]
+CMD ["gunicorn","-w", "2", "-b", "0.0.0.0:8000", "main:app"]
 

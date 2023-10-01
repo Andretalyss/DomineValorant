@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from psycopg2 import sql
+
 import jwt, datetime
 import psycopg2
 import bcrypt

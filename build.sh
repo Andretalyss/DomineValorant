@@ -18,6 +18,12 @@ if ! echo $postgres_status | grep -q "Up"; then
     sudo docker run -d -e POSTGRES_PASSWORD=pass -p 5432:5432 -v /tmp/postgres:/var/lib/postgresql/data --name postgres_db postgres
 fi
 
-echo -e "Iniciando nova imagem -> http://localhost:5000/ \n"
-sudo docker run -d -p 5000:5000 --network host --name valorant_api valorant-api:latest
+redis_status=$(sudo docker ps | grep redis)
+if ! echo $redis_status | grep -q "Up"; then
+    echo -e "Redis inativo, iniciando container\n"
+    sudo docker run -d --name redis -p 6379:6379 redis:3.2.5-alpine
+fi
+
+echo -e "Iniciando nova imagem -> http://localhost:8000/ \n"
+sudo docker run -d -p 8000:8000 --network host --name valorant_api valorant-api:latest
 

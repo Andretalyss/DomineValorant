@@ -12,3 +12,7 @@ db_config = {
     'host': DB_HOST,
     'port': DB_PORT
 }
+
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB   = 0

@@ -80,10 +80,8 @@ def agents_info_get_all():
                 sql.Literal(ultimate_description)
             )
 
-            
             cursor.execute(db_query)
             db_connection.commit()
-                
 
         db_connection.close()
         return jsonify({'message': 'banco populado'}), 200

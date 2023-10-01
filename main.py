@@ -1,5 +1,4 @@
 from flask import Flask
-
 # Importação de rotas.
 from routes.login import auth_route
 from routes.agents_info import agents_info_routes
